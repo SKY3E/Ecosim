@@ -278,15 +278,32 @@ MonoBehaviour:
   heightBoard: 10
   widthBoard: 20
   vcam: {fileID: 1794054256}
-  zoomSpeed: 1
+  zoomSpeed: 5
   minZoom: 3
   maxZoom: 10
-  petals: []
-  pistills: []
-  animals: []
   animalPrefab: {fileID: 2481238577990011344, guid: 7a340fba04b863e438e0339292e20e0f, type: 3}
   plantPrefab: {fileID: 2699379096564577427, guid: 8ccab3a9ae2d5204fa50db1cf6f773b3, type: 3}
   spawnPoint: {fileID: 820873054}
+  maxLifespanA: 100000
+  minLifespanA: 0
+  maxSpeedA: 10
+  minSpeedA: 1
+  maxFoodCapacityA: 10000
+  minFoodCapacityA: 100
+  maxWaterCapacityA: 1000
+  minWaterCapacityA: 10
+  maxReproductiveRateA: 5
+  minReproductiveRateA: 1
+  maxReproductiveTimeoutA: 100000
+  minReproductiveTimeoutA: 1000
+  maxLifespanP: 100000
+  minLifespanP: 0
+  maxFoodP: 10000
+  minFoodP: 100
+  maxReproductiveRateP: 5
+  minReproductiveRateP: 1
+  maxReproductiveTimeoutP: 100000
+  minReproductiveTimeoutP: 1000
 --- !u!4 &820873054
 Transform:
   m_ObjectHideFlags: 0

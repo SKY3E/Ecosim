@@ -13,6 +13,7 @@ public class PlantManager : MonoBehaviour
     public int lifespan;
     public int food;
     public int reproductiveRate;
+    public int reproductiveTimeout;
     // Entity Updates
     public int age;
 
@@ -36,13 +37,14 @@ public class PlantManager : MonoBehaviour
         }
     }
 
-    public void SetCharacteristics(string species, int lifespan, int food, int reproductiveRate)
+    public void SetCharacteristics(string species, int lifespan, int food, int reproductiveRate, int reproductiveTimeout)
     {
         // Characteristics
         this.species = species;
         this.lifespan = lifespan;
         this.food = food;
         this.reproductiveRate = reproductiveRate;
+        this.reproductiveTimeout = reproductiveTimeout;
         // Visuals
         GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Circle");
         GetComponent<SpriteRenderer>().color = Color.green;
@@ -77,7 +79,7 @@ public class PlantManager : MonoBehaviour
 
             Vector3 origin = transform.position + new Vector3(offsetX, offsetY, 0f);
 
-            gameManagerObj.GetComponent<GameManager>().CreateNewPlant(this.species, this.lifespan, this.food, this.reproductiveRate, origin);
+            gameManagerObj.GetComponent<GameManager>().CreateNewPlant(this.species, this.lifespan, this.food, this.reproductiveRate, this.reproductiveTimeout, origin);
         }
     }
 }
