@@ -6,21 +6,24 @@ using Cinemachine;
 public class GameManager : MonoBehaviour
 {
     // Game Board
-    public float heightBoard = 10;
-    public float widthBoard = 20;
+    public float heightBoard = 30;
+    public float widthBoard = 60;
     // Camera
     public CinemachineVirtualCamera vcam;
     private float moveSpeed = 5f;
     public float zoomSpeed = 5f;
     public float minZoom = 3f;
     public float maxZoom = 10f;
-    // Entities
+    // Entity References
     public GameObject animalPrefab;
     public GameObject plantPrefab;
     public Transform spawnPoint;
     // Folders
     public GameObject AnimalFolder;
     public GameObject PlantFolder;
+    // Maximum Entities
+    public int maxAnimals = 10;
+    public int maxPlants = 300;
     // Animal Properties (A)
     public int maxLifespanA = 100000;
     public int minLifespanA = 0;
@@ -37,6 +40,8 @@ public class GameManager : MonoBehaviour
     public float mutationRateA = 0.2f;
     public float minMutationAmtA = 0.8f;
     public float maxMutationAmtA = 1.2f;
+    public float minDetectionRadiusA = 1.5f;
+    public float maxDetectionRadiusA = 2.5f;
     // Plant Properties (P)
     public int maxLifespanP = 100000;
     public int minLifespanP = 0;
@@ -52,48 +57,56 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i <= 6; i++)
+        for (int i = 0; i <= 4; i++)
         {ChooseEntity("AR");}
-        for (int i = 0; i <= 21; i++)
+        for (int i = 0; i <= 59; i++)
         {ChooseEntity("PR");}
     }
 
     void Update()
     {
         MoveCamera();
+        AnimalFolder.name = "Animal Folder - " + AnimalFolder.transform.childCount;
+        PlantFolder.name = "Plant Folder - " + PlantFolder.transform.childCount;
     }
 
-    public void CreateNewAnimal(string species, int lifespan, int speed, int foodCapacity, int waterCapacity, int reproductiveRate, int reproductiveTimeout, Vector3 origin)
+    public void CreateNewAnimal(string species, int lifespan, int speed, int foodCapacity, int waterCapacity, int reproductiveRate, int reproductiveTimeout, float detectionRadius, Vector3 origin)
     {
-        GameObject Animal = Instantiate(animalPrefab, origin, Quaternion.identity);
-        Animal.transform.SetParent(AnimalFolder.transform);
-        AnimalManager animalManager = Animal.GetComponent<AnimalManager>();
-        if(animalManager != null)
-        {animalManager.SetCharacteristics(species, lifespan, speed, foodCapacity, waterCapacity, reproductiveRate, reproductiveTimeout);}
-        else
-        {Debug.LogError("AnimalManager script not found on the prefab!");}
+        if (AnimalFolder.transform.childCount < maxAnimals)
+        {
+            GameObject Animal = Instantiate(animalPrefab, origin, Quaternion.identity);
+            Animal.transform.SetParent(AnimalFolder.transform);
+            AnimalManager animalManager = Animal.GetComponent<AnimalManager>();
+            if(animalManager != null)
+            {animalManager.SetCharacteristics(species, lifespan, speed, foodCapacity, waterCapacity, reproductiveRate, reproductiveTimeout, detectionRadius);}
+            else
+            {Debug.LogError("AnimalManager script not found on the prefab!");}
+        } else {Debug.Log("Max animals reached");}
     }
 
     public void CreateNewPlant(string species, int lifespan, int food, int reproductiveRate, int reproductiveTimeout, Vector3 origin)
     {
-        GameObject Plant = Instantiate(plantPrefab, origin, Quaternion.identity);
-        Plant.transform.SetParent(PlantFolder.transform);
-        PlantManager plantManager = Plant.GetComponent<PlantManager>();
-        if(plantManager != null)
-        {plantManager.SetCharacteristics(species, lifespan, food, reproductiveRate, reproductiveTimeout);}
-        else
-        {Debug.LogError("PlantManager script not found on the prefab!");}
+        if (PlantFolder.transform.childCount < maxPlants)
+        {
+            GameObject Plant = Instantiate(plantPrefab, origin, Quaternion.identity);
+            Plant.transform.SetParent(PlantFolder.transform);
+            PlantManager plantManager = Plant.GetComponent<PlantManager>();
+            if(plantManager != null)
+            {plantManager.SetCharacteristics(species, lifespan, food, reproductiveRate, reproductiveTimeout);}
+            else
+            {Debug.LogError("PlantManager script not found on the prefab!");}
+        } else {Debug.Log("Max plants reached");}
     }
 
     private void ChooseEntity(string species)
     {
         if (species == "A1") // Initialize animal with predefined attributes
-        {CreateNewAnimal("A1", 5000, 1, 1000, 100, 1, 5000, new Vector3(0, 0, 0));}
+        {CreateNewAnimal("A1", 5000, 1, 1000, 100, 1, 5000, 2, new Vector3(0, 0, 0));}
         if (species == "P1") // Initialize plant with predefined attributes
         {CreateNewPlant("P1", 5000, 1000, 4, 5000, new Vector3(Random.Range(-widthBoard/2, widthBoard/2), Random.Range(-heightBoard/2, heightBoard/2), 0));}
 
         if (species == "AR") // Initialize animal with random attributes
-        {CreateNewAnimal("AR", Random.Range(minLifespanA, maxLifespanA), Random.Range(minSpeedA, maxSpeedA), Random.Range(minFoodCapacityA, maxFoodCapacityA), Random.Range(minWaterCapacityA, maxWaterCapacityA), Random.Range(minReproductiveRateA, maxReproductiveRateA), Random.Range(minReproductiveTimeoutA, maxReproductiveTimeoutA), new Vector3(Random.Range(-widthBoard/2, widthBoard/2), Random.Range(-heightBoard/2, heightBoard/2), 0));}
+        {CreateNewAnimal("AR", Random.Range(minLifespanA, maxLifespanA), Random.Range(minSpeedA, maxSpeedA), Random.Range(minFoodCapacityA, maxFoodCapacityA), Random.Range(minWaterCapacityA, maxWaterCapacityA), Random.Range(minReproductiveRateA, maxReproductiveRateA), Random.Range(minReproductiveTimeoutA, maxReproductiveTimeoutA), Random.Range(minDetectionRadiusA, maxDetectionRadiusA), new Vector3(Random.Range(-widthBoard/2, widthBoard/2), Random.Range(-heightBoard/2, heightBoard/2), 0));}
         if (species == "PR") // Initialize plant with random attributes
         {CreateNewPlant("PR", Random.Range(minLifespanP, maxLifespanP), Random.Range(minFoodP, maxFoodP), Random.Range(minReproductiveRateP, maxReproductiveRateP), Random.Range(minReproductiveTimeoutP, maxReproductiveTimeoutP), new Vector3(Random.Range(-widthBoard/2, widthBoard/2), Random.Range(-heightBoard/2, heightBoard/2), 0));}
     }

@@ -43,6 +43,7 @@ public class PlantManager : MonoBehaviour
         if(age < 0)
         {
             Reproduce();
+            this.food = 0;
             Destroy(gameObject);
         }
     }

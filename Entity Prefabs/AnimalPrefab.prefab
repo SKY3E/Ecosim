@@ -54,10 +54,20 @@ MonoBehaviour:
   foodCapacity: 0
   waterCapacity: 0
   reproductiveRate: 0
+  reproductiveTimeout: 0
   age: 0
   food: 0
   reproductionTimer: 0
+  isEating: 0
+  mutationRate: 0
+  minMutationAmt: 0
+  maxMutationAmt: 0
   targetPosition: {x: 0, y: 0, z: 0}
+  closestPlantTarget: {fileID: 0}
+  plantLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  detectionRadius: 2
 --- !u!212 &3329672146461993374
 SpriteRenderer:
   m_ObjectHideFlags: 0

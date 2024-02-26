@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5185897956278268019}
   - component: {fileID: 33651505798761836}
   - component: {fileID: -8079440317435210676}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlantPrefab
   m_TagString: Plant
   m_Icon: {fileID: 0}
@@ -52,7 +52,11 @@ MonoBehaviour:
   lifespan: 0
   food: 0
   reproductiveRate: 0
+  reproductiveTimeout: 0
   age: 0
+  mutationRate: 0
+  minMutationAmt: 0
+  maxMutationAmt: 0
 --- !u!212 &-8079440317435210676
 SpriteRenderer:
   m_ObjectHideFlags: 0
