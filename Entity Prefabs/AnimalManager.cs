@@ -6,6 +6,7 @@ public class AnimalManager : MonoBehaviour
 {
     // Game
     public GameObject gameManagerObj;
+    private GameManager gameManager;
     public float heightBoard = 0;
     public float widthBoard = 0;
     // Entity Initialization (Constant Traits)
@@ -20,17 +21,30 @@ public class AnimalManager : MonoBehaviour
     public int age;
     public int food;
     public int reproductionTimer;
-    // Entity Booleans
     public bool isEating = false;
+    // Entity Reproduction
+    public float mutationRate;
+    public float minMutationAmt;
+    public float maxMutationAmt;
     // Entity Movement
     public Vector3 targetPosition = Vector3.zero;
     public GameObject closestPlantTarget = null;
 
     void Start()
     {
-        SetGameCharacteristics();
+        // Set game characteristics
+        gameManagerObj = GameObject.FindWithTag("GameController");
+        gameManager = gameManagerObj.GetComponent<GameManager>();
+        heightBoard = gameManager.heightBoard;
+        widthBoard = gameManager.widthBoard;
+        // Set entity traits
         age = lifespan;
         food = foodCapacity;
+        gameObject.name = species;
+        // Set entity reproduction traits
+        mutationRate = gameManager.mutationRateA;
+        minMutationAmt = gameManager.minMutationAmtA;
+        maxMutationAmt = gameManager.maxMutationAmtA;
     }
 
     void Update()
@@ -60,14 +74,6 @@ public class AnimalManager : MonoBehaviour
         circleCollider.radius = 0.5f;
     }
 
-    private void SetGameCharacteristics()
-    {
-        gameManagerObj = GameObject.FindWithTag("GameController");
-        GameManager gameManager = gameManagerObj.GetComponent<GameManager>();
-        heightBoard = gameManager.heightBoard;
-        widthBoard = gameManager.widthBoard;
-    }
-
     private void Movement()
     {
         if (targetPosition == Vector3.zero)
@@ -82,7 +88,7 @@ public class AnimalManager : MonoBehaviour
 
     private void ActionChooser()
     {
-        // 1. Find food target
+        // Find food target
         if (food < foodCapacity)
         {   
             if (closestPlantTarget == null)
@@ -115,15 +121,15 @@ public class AnimalManager : MonoBehaviour
                 {
                     isEating = true;
                     // Reduce plant's food and increase animal's food
-                    if (closestPlantTarget.GetComponent<PlantManager>().food < 10)
+                    if (closestPlantTarget.GetComponent<PlantManager>().food < 30)
                     {
                         food += closestPlantTarget.GetComponent<PlantManager>().food;
                         closestPlantTarget.GetComponent<PlantManager>().food = 0;
                     }
                     else
                     {
-                        closestPlantTarget.GetComponent<PlantManager>().food -= 10;
-                        food += 10;
+                        closestPlantTarget.GetComponent<PlantManager>().food -= 30;
+                        food += 30;
                     }
 
                     // If plant is empty, destroy it and reset variables
@@ -135,17 +141,29 @@ public class AnimalManager : MonoBehaviour
                         closestPlantTarget = null;
                     }
                 }
-                else
-                {
-                    // Move towards the target only if not eating
-                    Movement();
-                }
+                else // Move towards the target only if not eating
+                {Movement();}
             }
         }
-        // If full or no plant found, move randomly
-        else
+        else // If full or no plant found, move randomly
+        {Movement();}
+        
+        // Reproduce if possible
+        if (reproductionTimer >= reproductiveTimeout && food >= foodCapacity * 0.75f)
         {
-            Movement();
+            gameManager.CreateNewAnimal(
+                this.species, 
+                (int)(Random.Range(0f, 1f) > mutationRate ? this.lifespan : this.lifespan * Random.Range(minMutationAmt, maxMutationAmt)),
+                (int)(Random.Range(0f, 1f) > mutationRate ? this.speed : this.speed * Random.Range(minMutationAmt, maxMutationAmt)),
+                (int)(Random.Range(0f, 1f) > mutationRate ? this.foodCapacity : this.foodCapacity * Random.Range(minMutationAmt, maxMutationAmt)),
+                (int)(Random.Range(0f, 1f) > mutationRate ? this.waterCapacity : this.waterCapacity * Random.Range(minMutationAmt, maxMutationAmt)),
+                (int)(Random.Range(0f, 1f) > mutationRate ? this.reproductiveRate : this.reproductiveRate * Random.Range(minMutationAmt, maxMutationAmt)),
+                (int)(Random.Range(0f, 1f) > mutationRate ? this.reproductiveTimeout : this.reproductiveTimeout * Random.Range(minMutationAmt, maxMutationAmt)),
+                new Vector3(transform.position.x + Random.Range(-2f, 2f), transform.position.y + Random.Range(-2f, 2f), 0)
+            );
+            Debug.Log("Animal Entity Reproduction!");
+            reproductionTimer = 0;
+            food -= (int)(foodCapacity * 0.5f);
         }
     }
 }

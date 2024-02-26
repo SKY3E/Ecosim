@@ -8,25 +8,35 @@ public class PlantManager : MonoBehaviour
     public GameObject gameManagerObj;
     public float heightBoard = 0;
     public float widthBoard = 0;
-    // Entity Initialization
+    // Entity Initialization (Constant Traits)
     public string species;
     public int lifespan;
     public int food;
     public int reproductiveRate;
     public int reproductiveTimeout;
-    // Entity Updates
+    // Entity Updates (Updatable Traits)
     public int age;
+    // Entity Reproduction
+    public float mutationRate;
+    public float minMutationAmt;
+    public float maxMutationAmt;
 
-    // Start is called before the first frame update
     void Start()
     {
-        SetGameCharacteristics();
+        // Set game characteristics
+        gameManagerObj = GameObject.FindWithTag("GameController");
+        GameManager gameManager = gameManagerObj.GetComponent<GameManager>();
+        heightBoard = gameManager.heightBoard;
+        widthBoard = gameManager.widthBoard;
+        // Set entity traits
         age = lifespan;
         gameObject.name = species;
-
+        // Set entity reproduction traits
+        mutationRate = gameManager.mutationRateP;
+        minMutationAmt = gameManager.minMutationAmtP;
+        maxMutationAmt = gameManager.maxMutationAmtP;
     }
 
-    // Update is called once per frame
     void Update()
     {
         age--;
@@ -52,14 +62,6 @@ public class PlantManager : MonoBehaviour
         circleCollider.radius = 0.5f;
         // Initialization
         transform.localScale = new Vector3(0.5f, 0.5f, 1f);
-    }
-
-    private void SetGameCharacteristics()
-    {
-        gameManagerObj = GameObject.FindWithTag("GameController");
-        GameManager gameManager = gameManagerObj.GetComponent<GameManager>();
-        heightBoard = gameManager.heightBoard;
-        widthBoard = gameManager.widthBoard;
     }
 
     private void Reproduce()

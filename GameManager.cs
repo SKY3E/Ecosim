@@ -18,8 +18,10 @@ public class GameManager : MonoBehaviour
     public GameObject animalPrefab;
     public GameObject plantPrefab;
     public Transform spawnPoint;
-    // Entity Properties
-    // Animal (A)
+    // Folders
+    public GameObject AnimalFolder;
+    public GameObject PlantFolder;
+    // Animal Properties (A)
     public int maxLifespanA = 100000;
     public int minLifespanA = 0;
     public int maxSpeedA = 10;
@@ -32,7 +34,10 @@ public class GameManager : MonoBehaviour
     public int minReproductiveRateA = 1;
     public int maxReproductiveTimeoutA = 100000;
     public int minReproductiveTimeoutA = 1000;
-    // Plant (P)
+    public float mutationRateA = 0.2f;
+    public float minMutationAmtA = 0.8f;
+    public float maxMutationAmtA = 1.2f;
+    // Plant Properties (P)
     public int maxLifespanP = 100000;
     public int minLifespanP = 0;
     public int maxFoodP = 10000;
@@ -41,6 +46,9 @@ public class GameManager : MonoBehaviour
     public int minReproductiveRateP = 1;
     public int maxReproductiveTimeoutP = 100000;
     public int minReproductiveTimeoutP = 1000;
+    public float mutationRateP = 0.2f;
+    public float minMutationAmtP = 0.8f;
+    public float maxMutationAmtP = 1.2f;
 
     void Start()
     {
@@ -58,6 +66,7 @@ public class GameManager : MonoBehaviour
     public void CreateNewAnimal(string species, int lifespan, int speed, int foodCapacity, int waterCapacity, int reproductiveRate, int reproductiveTimeout, Vector3 origin)
     {
         GameObject Animal = Instantiate(animalPrefab, origin, Quaternion.identity);
+        Animal.transform.SetParent(AnimalFolder.transform);
         AnimalManager animalManager = Animal.GetComponent<AnimalManager>();
         if(animalManager != null)
         {animalManager.SetCharacteristics(species, lifespan, speed, foodCapacity, waterCapacity, reproductiveRate, reproductiveTimeout);}
@@ -68,6 +77,7 @@ public class GameManager : MonoBehaviour
     public void CreateNewPlant(string species, int lifespan, int food, int reproductiveRate, int reproductiveTimeout, Vector3 origin)
     {
         GameObject Plant = Instantiate(plantPrefab, origin, Quaternion.identity);
+        Plant.transform.SetParent(PlantFolder.transform);
         PlantManager plantManager = Plant.GetComponent<PlantManager>();
         if(plantManager != null)
         {plantManager.SetCharacteristics(species, lifespan, food, reproductiveRate, reproductiveTimeout);}

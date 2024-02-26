@@ -119,6 +119,68 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &234528808
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 234528809}
+  m_Layer: 0
+  m_Name: Plant Folder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &234528809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234528808}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.86599433, y: 0.5613279, z: -0.0155046135}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &246272834
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 246272835}
+  m_Layer: 0
+  m_Name: Animal Folder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &246272835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246272834}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.86599433, y: 0.5613279, z: -0.0155046135}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,6 +346,8 @@ MonoBehaviour:
   animalPrefab: {fileID: 2481238577990011344, guid: 7a340fba04b863e438e0339292e20e0f, type: 3}
   plantPrefab: {fileID: 2699379096564577427, guid: 8ccab3a9ae2d5204fa50db1cf6f773b3, type: 3}
   spawnPoint: {fileID: 820873054}
+  AnimalFolder: {fileID: 246272834}
+  PlantFolder: {fileID: 234528808}
   maxLifespanA: 100000
   minLifespanA: 0
   maxSpeedA: 10
@@ -296,6 +360,9 @@ MonoBehaviour:
   minReproductiveRateA: 1
   maxReproductiveTimeoutA: 100000
   minReproductiveTimeoutA: 1000
+  mutationRateA: 0.2
+  minMutationAmtA: 0.8
+  maxMutationAmtA: 1.2
   maxLifespanP: 100000
   minLifespanP: 0
   maxFoodP: 10000
@@ -304,6 +371,9 @@ MonoBehaviour:
   minReproductiveRateP: 1
   maxReproductiveTimeoutP: 100000
   minReproductiveTimeoutP: 1000
+  mutationRateP: 0.2
+  minMutationAmtP: 0.8
+  maxMutationAmtP: 1.2
 --- !u!4 &820873054
 Transform:
   m_ObjectHideFlags: 0
@@ -493,3 +563,5 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 820873054}
   - {fileID: 1794054257}
+  - {fileID: 246272835}
+  - {fileID: 234528809}
