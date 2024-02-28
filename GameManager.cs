@@ -54,6 +54,9 @@ public class GameManager : MonoBehaviour
     public float mutationRateP = 0.2f;
     public float minMutationAmtP = 0.8f;
     public float maxMutationAmtP = 1.2f;
+    // UI
+    public GameObject selector;
+    public GameObject selectedEntity;
 
     void Start()
     {
@@ -66,8 +69,8 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         MoveCamera();
-        AnimalFolder.name = "Animal Folder - " + AnimalFolder.transform.childCount;
-        PlantFolder.name = "Plant Folder - " + PlantFolder.transform.childCount;
+        UpdateEditorUI();
+        UpdateUI();
     }
 
     public void CreateNewAnimal(string species, int lifespan, int speed, int foodCapacity, int waterCapacity, int reproductiveRate, int reproductiveTimeout, float detectionRadius, Vector3 origin)
@@ -129,5 +132,31 @@ public class GameManager : MonoBehaviour
             if (vcam.m_Lens.Orthographic)
             {vcam.m_Lens.OrthographicSize = Mathf.Clamp(vcam.m_Lens.OrthographicSize + delta, minZoom, maxZoom);}
         }
+    }
+
+    private void UpdateEditorUI()
+    {
+        AnimalFolder.name = "Animal Folder - " + AnimalFolder.transform.childCount;
+        PlantFolder.name = "Plant Folder - " + PlantFolder.transform.childCount;
+    }
+
+    private void UpdateUI()
+    {
+        // Update Selector and selectedEntity
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePosition2D = new Vector2(mousePosition.x, mousePosition.y);
+
+            RaycastHit2D hit = Physics2D.Raycast(mousePosition2D, Vector2.zero);
+
+            if (hit.collider != null)
+            {
+                selectedEntity = hit.collider.gameObject;
+                selector.transform.localScale = selectedEntity.transform.localScale * 2f;
+            }
+        }
+        if (selectedEntity != null)
+        {selector.transform.position = selectedEntity.transform.position;}
     }
 }
