@@ -135,23 +135,26 @@ public class AnimalManager : MonoBehaviour
         // Reproduce if possible
         if (reproductionTimer >= reproductiveTimeout && food >= foodCapacity * 0.75f)
         {
-            gameManager.CreateNewAnimal(
-                this.species, 
-                (int)(Random.Range(0f, 1f) > mutationRate ? this.lifespan : this.lifespan * Random.Range(minMutationAmt, maxMutationAmt)),
-                (int)(Random.Range(0f, 1f) > mutationRate ? this.speed : this.speed * Random.Range(minMutationAmt, maxMutationAmt)),
-                (int)(Random.Range(0f, 1f) > mutationRate ? this.foodCapacity : this.foodCapacity * Random.Range(minMutationAmt, maxMutationAmt)),
-                (int)(Random.Range(0f, 1f) > mutationRate ? this.waterCapacity : this.waterCapacity * Random.Range(minMutationAmt, maxMutationAmt)),
-                (int)(Random.Range(0f, 1f) > mutationRate ? this.reproductiveRate : this.reproductiveRate * Random.Range(minMutationAmt, maxMutationAmt)),
-                (int)(Random.Range(0f, 1f) > mutationRate ? this.reproductiveTimeout : this.reproductiveTimeout * Random.Range(minMutationAmt, maxMutationAmt)),
-                Random.Range(0f, 1f) > mutationRate ? this.detectionRadius : this.detectionRadius * Random.Range(minMutationAmt, maxMutationAmt),
-                new Vector3(transform.position.x + Random.Range(-2f, 2f), transform.position.y + Random.Range(-2f, 2f), 0)
-            );
-            Debug.Log("Animal Entity Reproduction!");
+            for (int i = 0; i < reproductiveRate; i++)
+            {
+                gameManager.CreateNewAnimal(
+                    this.species, 
+                    (int)(Random.Range(0f, 1f) > mutationRate ? this.lifespan : this.lifespan * Random.Range(minMutationAmt, maxMutationAmt)),
+                    (int)(Random.Range(0f, 1f) > mutationRate ? this.speed : this.speed * Random.Range(minMutationAmt, maxMutationAmt)),
+                    (int)(Random.Range(0f, 1f) > mutationRate ? this.foodCapacity : this.foodCapacity * Random.Range(minMutationAmt, maxMutationAmt)),
+                    (int)(Random.Range(0f, 1f) > mutationRate ? this.waterCapacity : this.waterCapacity * Random.Range(minMutationAmt, maxMutationAmt)),
+                    (int)(Random.Range(0f, 1f) > mutationRate ? this.reproductiveRate : this.reproductiveRate * Random.Range(minMutationAmt, maxMutationAmt)),
+                    (int)(Random.Range(0f, 1f) > mutationRate ? this.reproductiveTimeout : this.reproductiveTimeout * Random.Range(minMutationAmt, maxMutationAmt)),
+                    Random.Range(0f, 1f) > mutationRate ? this.detectionRadius : this.detectionRadius * Random.Range(minMutationAmt, maxMutationAmt),
+                    new Vector3(transform.position.x + Random.Range(-2f, 2f), transform.position.y + Random.Range(-2f, 2f), 0)
+                );
+            }
             reproductionTimer = 0;
             food -= (int)(foodCapacity * 0.5f);
         }
     }
 
+    // Debug
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
